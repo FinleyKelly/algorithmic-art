@@ -11,7 +11,7 @@ function squareWave(p) {
 
   let t = 0.0;
 
-  function get_height(x, y, t) {
+  function getHeight(x, y, t) {
     // return min(p.abs(x - DIMENTIONS/2 + 0.5), p.abs(z - DIMENTIONS/2 + 0.5)) % 2;
     let speed = 1.0;
     return p.sin(x + t * speed) + p.cos(y + t * speed);
@@ -29,7 +29,7 @@ function squareWave(p) {
     for (x = 0; x < DIMENTIONS; x++) {
       for (z = 0; z < DIMENTIONS; z++) {
         p.push();
-        let y = get_height(x, z, t);
+        let y = getHeight(x, z, t);
         p.translate(x * SIZE, y * SIZE, z * SIZE);
         // p.fill(255 - y * 50);
         p.noStroke();
