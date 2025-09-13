@@ -1,14 +1,15 @@
 new p5(circlesInCircles, "circlesInCircles");
 
 function circlesInCircles(p) {
+  let sketchTime = new SketchTime(p);
   let size = 400;
   let radiusDecay = 0.25;
-  let time = 0;
   let numCircles;
   let angleOffset;
 
   p.setup = function setup() {
     p.createCanvas(size, size);
+    sketchTime.setupPauseAndResetButtons()
     numCircles = p.createSlider(1, 6, 1, 1);
     p.angleMode(p.RADIANS);
     angleOffset = p.TAU / 4;
@@ -26,8 +27,8 @@ function circlesInCircles(p) {
   };
 
   p.draw = function draw() {
-    time += p.deltaTime / 1000.0;
-    angleOffset = p.TAU * 0.1 * time;
+    sketchTime.update();
+    angleOffset = p.TAU * 0.1 * sketchTime.currentTime;
     circleAngle = 0.5 * p.TAU * 1 / numCircles.value();
     if (numCircles.value() == 1) {
       radiusDecay = 0.5;

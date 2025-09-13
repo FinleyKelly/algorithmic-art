@@ -1,17 +1,22 @@
 new p5(flowerGravity, "flowerGravity");
 
 function flowerGravity(p) {
+  let sketchTime = new SketchTime(p);
   let points = [];
   let dt;
   let numPoints = 1000;
   let speed = 0.5;
   const size = 400;
 
+  function init() {
+    points = [];
+    p.background(220, 220, 220);
+  }
+
   p.setup = function setup() {
     p.createCanvas(size, size);
-    // for(i=0;i<100;i++){
-    //   draw2(1.0/60.0);
-    // }
+    sketchTime.setupPauseAndResetButtons(init);
+    init();
   };
 
   function getVelocity(a) {
@@ -24,11 +29,7 @@ function flowerGravity(p) {
   }
 
   p.draw = function draw() {
-    dt = p.deltaTime / 1000.0;
-    draw2(dt);
-  };
-
-  function draw2(dt) {
+    dt = sketchTime.update();
     p.background(220, 220, 220, dt * 255);
     while (points.length < numPoints) {
       points.push(p.createVector(p.random(size), p.random(size)));

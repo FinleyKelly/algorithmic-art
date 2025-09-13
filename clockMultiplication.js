@@ -1,16 +1,16 @@
 new p5(clockMultiplication, "clockMultiplication");
 
 function clockMultiplication(p) {
+  let sketchTime = new SketchTime(p);
   const SIZE = 400;
   let points;
-  let multiplier = 0.0;
   let transparancy;
   let strokeWidth;
-  let pointsText;
   let speed;
 
   p.setup = function setup() {
     p.createCanvas(SIZE, SIZE);
+    sketchTime.setupPauseAndResetButtons();
     // multiplier = p.createSlider(0.0, 10.0, 0.0, 0.1)
     p.createP("Points");
     points = p.createSlider(0, 2000, 250);
@@ -37,14 +37,13 @@ function clockMultiplication(p) {
   };
 
   p.draw = function draw() {
-    multiplier += p.deltaTime / 1000.0 * speed.value();
-    // multiplier = 20
+    sketchTime.update(speed.value());
     p.background(220);
     p.circle(SIZE / 2, SIZE / 2, SIZE);
     p.strokeWeight(strokeWidth.value());
     p.stroke(0, 0, 0, transparancy.value());
     for (a = 0; a < points.value(); a++) {
-      draw_line(a, a * multiplier);
+      draw_line(a, a * sketchTime.currentTime);
     }
   };
 }

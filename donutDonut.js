@@ -1,7 +1,7 @@
 new p5(donutDonut, "donutDonut");
 
 function donutDonut(p) {
-  let time = 0.0;
+  let sketchTime = new SketchTime(p);
   let amount = 6;
   let speed = 0.1;
   let radius = 15.0;
@@ -9,20 +9,21 @@ function donutDonut(p) {
 
   p.setup = function setup() {
     p.createCanvas(400, 400, p.WEBGL);
+    sketchTime.setupPauseAndResetButtons();
   };
 
   p.draw = function draw() {
-    time += p.deltaTime / 1000.0;
+    sketchTime.update()
     p.background(220);
     p.normalMaterial();
 
-    p.rotateY(p.TAU * time * 0.1);
+    p.rotateY(p.TAU * sketchTime.currentTime * 0.1);
 
     for (i = 0; i < amount; i++) {
       p.push();
       let angle = p.TAU * (i / (amount * 2.0));
       p.rotateZ(angle);
-      p.translate(0, 200.0 * p.sin(angle + p.TAU * time * speed), 0);
+      p.translate(0, 200.0 * p.sin(angle + p.TAU * sketchTime.currentTime * speed), 0);
       p.sphere(radius);
       p.pop();
     }

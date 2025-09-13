@@ -1,6 +1,8 @@
 new p5(blackHole, "blackHole");
 
 function blackHole(p) {
+  let sketch_time = new SketchTime(p);
+  
   const SIZE = 600;
   const BLACK_HOLE_RADIUS = 70;
   const PLANET_RADIUS = 3;
@@ -25,11 +27,9 @@ function blackHole(p) {
   }
 
   let planets = [];
-  let time = 0.0;
 
-  p.setup = function setup() {
-    p.createCanvas(400, 400);
-
+  function init() {
+    planets = [];
     for (let i = 0; i < p.pow(SIZE, 3) * DENSITY; i++) {
       let position = p.createVector(p.random(SIZE) - SIZE / 2, p.random(SIZE) - SIZE / 2, p.random(SIZE) - SIZE / 2);
       let horizonalPosition = p.createVector(position.x, 0, position.z);
@@ -38,11 +38,17 @@ function blackHole(p) {
       }
     }
     planets.push(new Planet(p.createVector(0, 0, 0), BLACK_HOLE_RADIUS, p.color(0)));
+  }
+
+  p.setup = function setup() {
+    p.createCanvas(400, 400);
+    sketch_time.setupPauseAndResetButtons(init);
+    init();
   };
 
   p.draw = function draw() {
-    time += p.deltaTime / 1000.0;
-    let angle = time * SPEED;
+    sketch_time.update()
+    let angle = sketch_time.currentTime * SPEED;
 
     p.background(0);
     planets.sort((a, b) => b.depth(angle) - a.depth(angle));

@@ -1,9 +1,9 @@
 new p5(moirePattern, "moirePattern");
 
 function moirePattern(p) {
+  let sketchTime = new SketchTime(p);
   let SIZE;
   let maxSize;
-  let time = 0.0;
   let paused;
   let period;
 
@@ -11,8 +11,7 @@ function moirePattern(p) {
     SIZE = 400.0;
     maxSize = p.sqrt(SIZE * SIZE * 2);
     p.createCanvas(SIZE, SIZE);
-    p.createP("Pause");
-    paused = p.createCheckbox();
+    sketchTime.setupPauseAndResetButtons();
     p.createP("Size");
     period = p.createSlider(2.0, 20.0, 10.0);
   };
@@ -37,11 +36,9 @@ function moirePattern(p) {
   };
 
   p.draw = function draw() {
-    if (!paused.checked()) {
-      time += p.deltaTime / 1000.0;
-    }
+    sketchTime.update();
     p.background(220);
-    let rotation = time * 0.2;
+    let rotation = sketchTime.currentTime * 0.2;
     let periodValue = period.value();
     drawLines(rotation, periodValue);
     drawLines(rotation + p.TAU / 4, periodValue);

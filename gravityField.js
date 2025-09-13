@@ -1,10 +1,10 @@
 new p5(gravityField, "gravityField");
 
 function gravityField(p) {
+  let sketchTime = new SketchTime(p);
   const SCREEN_SIZE = 400;
   const GRID_SIZE = 40;
   let gridSpacing = SCREEN_SIZE / GRID_SIZE
-  let time = 0;
 
   function drawGrid() {
     for (let i = 0; i < GRID_SIZE + 1; i++) {
@@ -21,8 +21,8 @@ function gravityField(p) {
 
   function transform(v) {
     let attractors = [
-      p.createVector(SCREEN_SIZE / 2 + p.sin(time) * 100, SCREEN_SIZE / 2 + p.cos(time) * 100),
-      p.createVector(SCREEN_SIZE / 2 + p.sin(time + p.TAU / 2) * 100, SCREEN_SIZE / 2 + p.cos(time + p.TAU / 2) * 100),
+      p.createVector(SCREEN_SIZE / 2 + p.sin(sketchTime.currentTime) * 100, SCREEN_SIZE / 2 + p.cos(sketchTime.currentTime) * 100),
+      p.createVector(SCREEN_SIZE / 2 + p.sin(sketchTime.currentTime + p.TAU / 2) * 100, SCREEN_SIZE / 2 + p.cos(sketchTime.currentTime + p.TAU / 2) * 100),
     ];
     function calculateOffet(attractor) {
       let difference = p5.Vector.sub(attractor, v);
@@ -44,10 +44,11 @@ function gravityField(p) {
 
   p.setup = function setup() {
     p.createCanvas(SCREEN_SIZE, SCREEN_SIZE);
+    sketchTime.setupPauseAndResetButtons();
   };
 
   p.draw = function draw() {
-    time += p.deltaTime / 1000;
+    sketchTime.update()
     p.background(220);
     drawGrid();
   };

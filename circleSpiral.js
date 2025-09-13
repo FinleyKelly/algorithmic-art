@@ -1,21 +1,20 @@
 new p5(circleSpiral, "circleSpiral");
 
 function circleSpiral(p) {
-  let progress = 0.0;
+  let sketchTime = new SketchTime(p);
   let density;
   let speed;
-  let decayHalfLife;
   let arcType;
   let arcTypeSize = "Size";
   let arcTypeTime = "Time";
   let arcSize;
   let arcTime;
   let frameRate = 120.0;
-  let stepTime = 1.0 / frameRate;
   let canvasSize = 400;
 
   p.setup = function setup() {
     p.createCanvas(canvasSize, canvasSize);
+    sketchTime.setupPauseAndResetButtons();
     p.frameRate(frameRate);
     p.createP("Circle density");
     density = p.createSlider(0.5, 10.0, 6.0, 0.0001);
@@ -43,7 +42,7 @@ function circleSpiral(p) {
   }
 
   p.draw = function draw() {
-    progress += stepTime * speed.value();
+    sketchTime.update(speed.value());
     // p.background(220, 220, 220, 255.0 * stepTime * decayHalfLife.value() / 2.0);
     p.background(220, 220, 220);
     p.noFill();
@@ -51,10 +50,10 @@ function circleSpiral(p) {
     p.strokeWeight(1);
     let numberOfArcs = canvasSize / 2.0 * Math.sqrt(2) / density.value();
     for (i = 0; i < numberOfArcs; i++) {
-      let angle = getAngle(i, progress);
+      let angle = getAngle(i, sketchTime.currentTime);
       let lastAngle;
       if (arcType.value() == arcTypeTime) {
-        lastAngle = getAngle(i, progress - arcTime.value());
+        lastAngle = getAngle(i, sketchTime.currentTime - arcTime.value());
       } else if (arcType.value() == arcTypeSize) {
         lastAngle = angle - arcSize.value();
       }
