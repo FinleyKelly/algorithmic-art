@@ -12,9 +12,10 @@ function circleSpiral(p) {
   let frameRate = 120.0;
   let canvasSize = 400;
 
-  p.setup = function setup() {
+  function setup() {
     p.createCanvas(canvasSize, canvasSize);
     sketchTime.setupPauseAndResetButtons();
+    sketchTime.addTimeSlider(draw, 1000.0);
     p.frameRate(frameRate);
     p.createP("Circle density");
     density = p.createSlider(0.5, 10.0, 6.0, 0.0001);
@@ -41,7 +42,7 @@ function circleSpiral(p) {
     return i * density.value();
   }
 
-  p.draw = function draw() {
+  function draw() {
     sketchTime.update(speed.value());
     // p.background(220, 220, 220, 255.0 * stepTime * decayHalfLife.value() / 2.0);
     p.background(220, 220, 220);
@@ -61,4 +62,6 @@ function circleSpiral(p) {
       p.arc(canvasSize / 2.0, canvasSize / 2.0, distance * 2.0, distance * 2.0, angle, lastAngle);
     }
   };
+  p.setup = setup;
+  p.draw = draw;
 }

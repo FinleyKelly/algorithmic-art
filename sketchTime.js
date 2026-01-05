@@ -4,6 +4,7 @@ class SketchTime {
     this.currentTime = 0;
     this.justPaused = false;
     this.pauseButton = null;
+    this.timeSlider = null;
   }
 
   pause() {
@@ -31,6 +32,9 @@ class SketchTime {
       return 0;
     } else {
       this.currentTime += (this.p.deltaTime / 1000.0) * speed;
+      if (this.timeSlider != null) {
+      this.timeSlider.value(this.currentTime);
+      }
       return this.p.deltaTime / 1000.0 * speed;
     }
   }
@@ -47,6 +51,11 @@ class SketchTime {
       }
     });
     this.pause();
+  }
+
+  addTimeSlider(draw, loopTime) {
+    this.timeSlider = this.p.createSlider(0.0, loopTime, 0.0);
+    this.timeSlider.mouseMoved(() => this.currentTime = this.timeSlider.value());
   }
 }
 
